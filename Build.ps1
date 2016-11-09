@@ -1,7 +1,7 @@
 #build module script
 [cmdletbinding()]
 Param(
-    [string]$ModuleName = "PowerPlan"
+    [string]$ModuleName = "SampleModule"
     ,
     [switch]$Major
     ,
@@ -22,6 +22,13 @@ Write-Verbose -Message "$F - Starting build, getting files"
 if (Get-Module -Name $ModuleName)
 {
     Write-Verbose "$F - Removing $ModuleName module"
-    Remove-Module $ModuleName -Verbose:$false -ErrorAction SilentlyContinue
+    Remove-Module -Name $ModuleName -Force -ErrorAction SilentlyContinue
 }
 #endregion
+
+Write-Verbose "Loading module [$ModuleName]..."
+Import-Module ./$ModuleName -Force -Verbose -Scope Global
+
+Get-Module -Name $ModuleName 
+
+TestHelperFunc

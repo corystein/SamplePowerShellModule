@@ -4,9 +4,13 @@ $Public = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Public') -Filter *.ps1 
 
 foreach ($Script in $Public) {
     . $Script.FullName
+    Write-Host "Loading public function [$($Script.FullName)]..."
     Export-ModuleMember $Script.BaseName
 }
 
 foreach ($Script in $Private) {
-    . $Script.FullName
+    Write-Host "Sourcing private files [$($Script.FullName)]..."
+    (get-item $Script.FullName ).parent.parent.FullName
+    . "$($Script.FullName)"
 }
+
